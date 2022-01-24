@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.jou": "scheme"
+    },
+    "cSpell.words": [
+        "eulerian",
+        "libudf",
+        "mfluid",
+        "mphase",
+        "UDFs"
+    ]
+}

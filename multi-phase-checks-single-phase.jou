@@ -1,0 +1,30 @@
+; Read mesh.
+/file/read-case "channel.msh.gz"
+
+; Merge the symmetry zones with the wall zones to simplify the mesh.
+/define/boundary-conditions/modify-zones/zone-type 8 wall
+/define/boundary-conditions/modify-zones/zone-type 9 wall
+/define/boundary-conditions/modify-zones/merge-zones 5 8 9 10 ()
+/define/boundary-conditions/modify-zones/zone-name 5 walls
+
+; No turbulence model needed.
+/define/models/viscous/laminar? yes
+
+; Disable any multi-phase model.
+/define/models/multiphase/model none
+
+; No need to any additional setting, at this state, if we initialize the solution, the
+; variables will already be available with the expected values.
+
+; Set default values for initialization.
+/solve/initialize/set-defaults/pressure 0.0
+/solve/initialize/set-defaults/x-velocity 0.0
+/solve/initialize/set-defaults/y-velocity 0.0
+/solve/initialize/set-defaults/z-velocity 0.0
+
+; Initialize the solution.
+/solve/initialize/initialize-flow
+
+; Read and execute the UDF to check the variables.
+/define/user-defined/compiled-functions load "libudf"
+/define/user-defined/execute-on-demand "print_multi_phase_variables::libudf"
